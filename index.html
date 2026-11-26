@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Al-Quran Al-Kareem — Flagship Mushaf & Tilawat App</title>
+  <title>Tilawat-e-Quran — Flagship Mushaf & Recitation Studio</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Amiri Quran, Scheherazade New, Plus Jakarta Sans, Noto Sans Devanagari, Noto Nastaliq Urdu -->
+  <!-- Typography: Amiri Quran, Scheherazade New, Plus Jakarta Sans, Noto Sans Devanagari, Noto Nastaliq Urdu -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Noto+Nastaliq+Urdu:wght@400;600&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Scheherazade+New:wght@400;600;700&display=swap" rel="stylesheet">
@@ -14,40 +14,41 @@
   <style>
     :root {
       --app-bg: #06140e;
-      --app-bg-grad-1: rgba(21, 78, 56, 0.52);
-      --app-bg-grad-2: rgba(212, 175, 55, 0.07);
+      --app-bg-grad-1: rgba(21, 78, 56, 0.56);
+      --app-bg-grad-2: rgba(212, 175, 55, 0.09);
       --app-surface: #112b20;
       --app-surface-2: #0b1f16;
-      --app-glass: rgba(6, 20, 14, 0.88);
+      --app-glass: rgba(6, 20, 14, 0.89);
       --app-text: #f8fafc;
       --app-subtext: #a7f3d0;
       --accent-primary: #d4af37;
       --accent-light: #f3d98b;
       --accent-contrast: #052e16;
-      --accent-hairline: rgba(212, 175, 55, 0.24);
+      --accent-hairline: rgba(212, 175, 55, 0.25);
 
       /* Bound Mushaf Paper Tokens */
       --paper-bg: #faf6ec;
       --paper-edge: #ede3cd;
       --paper-spine: rgba(65, 45, 16, 0.14);
-      --paper-shadow: rgba(3, 12, 8, 0.58);
+      --paper-shadow: rgba(3, 12, 8, 0.60);
       --border-gold: #b88a3e;
       --text-ink: #1a1610;
       --text-muted: #665842;
       --highlight-ayah: rgba(212, 175, 55, 0.28);
-      --last-read-bg: rgba(16, 185, 129, 0.13);
+      --last-read-bg: rgba(16, 185, 129, 0.14);
     }
 
     * {
       -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
     }
 
     body {
       font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--app-bg);
       background-image:
-        radial-gradient(ellipse 85% 50% at 50% -10%, var(--app-bg-grad-1), transparent),
-        radial-gradient(circle at 85% 90%, var(--app-bg-grad-2), transparent);
+        radial-gradient(ellipse 88% 52% at 50% -10%, var(--app-bg-grad-1), transparent),
+        radial-gradient(circle at 86% 92%, var(--app-bg-grad-2), transparent);
       color: var(--app-text);
       min-height: 100vh;
       overflow-x: hidden;
@@ -58,7 +59,7 @@
       font-family: 'Amiri Quran', 'Scheherazade New', serif;
       direction: rtl;
       unicode-bidi: isolate;
-      line-height: 2.45;
+      line-height: 2.48;
       text-align: justify;
       text-align-last: center;
     }
@@ -83,7 +84,7 @@
       backdrop-filter: blur(22px);
       -webkit-backdrop-filter: blur(22px);
       border-top: 1px solid var(--accent-hairline);
-      box-shadow: 0 -14px 40px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 -14px 40px rgba(0, 0, 0, 0.48);
     }
 
     .surface-pill {
@@ -109,30 +110,30 @@
 
     .subtext-muted {
       color: var(--app-subtext);
-      opacity: 0.85;
+      opacity: 0.86;
     }
 
     .hero-resume-card {
       background: linear-gradient(135deg, var(--app-surface) 0%, var(--app-surface-2) 100%);
       border: 1px solid var(--accent-hairline);
-      box-shadow: 0 20px 44px -14px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 44px -14px rgba(0, 0, 0, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     .para-card {
       background: linear-gradient(180deg, var(--app-surface) 0%, var(--app-surface-2) 100%);
       border: 1px solid var(--accent-hairline);
       color: var(--app-text);
-      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+      transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.24s ease, box-shadow 0.24s ease;
     }
 
     .para-card:hover {
       border-color: var(--accent-primary);
-      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.36);
       transform: translateY(-2px);
     }
 
     .para-card:active {
-      transform: scale(0.98);
+      transform: scale(0.985);
     }
 
     /* Realistic Bound Mushaf Book Surface */
@@ -175,30 +176,30 @@
     .corner-br { bottom: 6px; right: 6px; border-bottom: 2px solid; border-right: 2px solid; border-bottom-right-radius: 4px; }
 
     @keyframes flipNext {
-      0% { opacity: 0.35; transform: perspective(1500px) rotateY(-8deg) scale(0.985); }
+      0% { opacity: 0.35; transform: perspective(1500px) rotateY(-7deg) scale(0.986); }
       100% { opacity: 1; transform: perspective(1500px) rotateY(0deg) scale(1); }
     }
 
     @keyframes flipPrev {
-      0% { opacity: 0.35; transform: perspective(1500px) rotateY(8deg) scale(0.985); }
+      0% { opacity: 0.35; transform: perspective(1500px) rotateY(7deg) scale(0.986); }
       100% { opacity: 1; transform: perspective(1500px) rotateY(0deg) scale(1); }
     }
 
-    .animate-flip-next { animation: flipNext 0.38s cubic-bezier(0.22, 1, 0.36, 1); }
-    .animate-flip-prev { animation: flipPrev 0.38s cubic-bezier(0.22, 1, 0.36, 1); }
+    .animate-flip-next { animation: flipNext 0.36s cubic-bezier(0.22, 1, 0.36, 1); }
+    .animate-flip-prev { animation: flipPrev 0.36s cubic-bezier(0.22, 1, 0.36, 1); }
 
     @keyframes tasbihPulse {
       0% { transform: scale(0.95); }
       50% { transform: scale(1.03); }
       100% { transform: scale(1); }
     }
-    .animate-tasbih { animation: tasbihPulse 0.22s ease-out; }
+    .animate-tasbih { animation: tasbihPulse 0.2s ease-out; }
 
     .ayah-span {
       cursor: pointer;
       border-radius: 6px;
       padding: 2px 5px;
-      transition: background-color 0.22s ease, box-shadow 0.22s ease;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .ayah-span:hover {
@@ -304,7 +305,7 @@
 </head>
 <body class="flex flex-col justify-between selection:bg-amber-400/30">
 
-  <!-- Sleek Floating Toast Notification (Never uses alert()) -->
+  <!-- Floating Status Toast -->
   <div id="toastBanner" class="fixed top-16 left-1/2 -translate-x-1/2 z-[60] hidden px-4 py-2 rounded-full surface-deep shadow-2xl text-xs font-semibold tracking-wide flex items-center gap-2 transition-all">
     <span class="w-2 h-2 rounded-full animate-ping" style="background-color: var(--accent-primary);"></span>
     <span id="toastText" class="accent-text">Saved</span>
@@ -330,9 +331,7 @@
         </button>
       </div>
 
-      <div id="themesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto py-4 pr-1">
-        <!-- Populated dynamically with 8 Designer Themes -->
-      </div>
+      <div id="themesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto py-4 pr-1"></div>
     </div>
   </div>
 
@@ -348,7 +347,6 @@
         </button>
       </div>
 
-      <!-- Dhikr Preset Selector -->
       <div class="w-full mt-4 flex flex-wrap justify-center gap-1.5" id="tasbihPresetRow">
         <button type="button" data-dhikr-idx="0" class="tasbih-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold surface-pill">سُبْحَانَ اللَّهِ</button>
         <button type="button" data-dhikr-idx="1" class="tasbih-preset-btn px-3 py-1.5 rounded-xl text-xs font-bold surface-pill">الْحَمْدُ لِلَّهِ</button>
@@ -362,14 +360,12 @@
         <p id="tasbihTranslitPhrase" class="text-xs subtext-muted mt-0.5">SubhanAllah • Glory be to Allah</p>
       </div>
 
-      <!-- Interactive Circular Tap Bead -->
       <button id="tasbihTapCircle" type="button" class="my-5 w-44 h-44 rounded-full surface-pill border-2 flex flex-col items-center justify-center shadow-2xl transition active:scale-95 select-none relative" style="border-color: var(--accent-primary);">
         <span id="tasbihCountDisplay" class="text-5xl font-extrabold accent-text tracking-tight">0</span>
         <span id="tasbihTargetDisplay" class="text-xs subtext-muted mt-1 font-semibold">/ 33</span>
         <span id="tasbihTapHint" class="text-[10px] uppercase tracking-widest opacity-60 mt-2">Tap to Count</span>
       </button>
 
-      <!-- Target Loop & Reset Controls -->
       <div class="w-full flex items-center justify-between gap-2 pt-2 border-t" style="border-color: var(--accent-hairline);">
         <div class="flex items-center gap-1.5">
           <span id="tasbihTargetLabel" class="text-xs subtext-muted font-semibold">Target:</span>
@@ -406,9 +402,7 @@
         </button>
       </div>
 
-      <div id="bookmarksListContainer" class="flex-1 overflow-y-auto py-3 space-y-2.5">
-        <!-- Populated dynamically -->
-      </div>
+      <div id="bookmarksListContainer" class="flex-1 overflow-y-auto py-3 space-y-2.5"></div>
     </div>
   </div>
 
@@ -416,10 +410,8 @@
   <!-- VIEW 1: FLAGSHIP HOME SCREEN (30 PARAS INDEX + HERO RESUME + TOOLS)   -->
   <!-- ===================================================================== -->
   <section id="homeIndexView" class="min-h-screen flex flex-col justify-between pb-12">
-    <!-- Top App Bar -->
     <header class="sticky top-0 z-30 app-glass-bar">
       <div class="max-w-5xl mx-auto px-3.5 sm:px-6 py-3 flex items-center justify-between gap-2">
-        <!-- Brand Identity -->
         <div class="flex items-center gap-2.5 min-w-0">
           <div class="w-10 h-10 rounded-2xl surface-pill flex items-center justify-center accent-text shadow-inner shrink-0">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -429,33 +421,28 @@
           </div>
           <div class="min-w-0">
             <div class="flex items-center gap-1.5">
-              <h1 class="text-base sm:text-xl font-bold accent-text tracking-tight leading-none truncate">القرآن الکریم</h1>
+              <h1 class="text-base sm:text-xl font-bold accent-text tracking-tight leading-none truncate">Tilawat-e-Quran</h1>
               <span class="px-1.5 py-0.5 rounded-md surface-pill text-[9px] font-bold accent-text uppercase tracking-wider shrink-0">Mushaf</span>
             </div>
             <p id="homeSubtitleText" class="text-[11px] subtext-muted mt-1 truncate">Complete 30 Paras • Book & Recitation</p>
           </div>
         </div>
 
-        <!-- Right Controls: Themes Studio + Tasbih + Bookmarks + EN/हिन्दी -->
         <div class="flex items-center gap-1.5 shrink-0">
-          <!-- Themes Studio Button -->
           <button id="homeOpenThemesBtn" type="button" class="px-2.5 py-2 rounded-xl surface-pill hover:opacity-90 transition active:scale-95 flex items-center gap-1.5 text-xs font-bold" title="Themes Collection">
             <svg class="w-4 h-4 accent-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
             <span id="homeThemesBtnLabel" class="hidden md:inline accent-text">Themes</span>
           </button>
 
-          <!-- Digital Tasbih Button -->
           <button id="homeOpenTasbihBtn" type="button" class="p-2 rounded-xl surface-pill hover:opacity-90 transition active:scale-95" title="Digital Tasbih">
             <svg class="w-4 h-4 accent-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
           </button>
 
-          <!-- Saved Bookmarks Button -->
           <button id="homeOpenBookmarksBtn" type="button" class="p-2 rounded-xl surface-pill hover:opacity-90 transition active:scale-95 relative" title="Saved Ayahs">
             <svg class="w-4 h-4 accent-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             <span id="bookmarksCountBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 rounded-full accent-btn-solid text-[9px] font-extrabold flex items-center justify-center">0</span>
           </button>
 
-          <!-- Segmented App UI Language Pill -->
           <div class="flex items-center surface-deep p-0.5 rounded-xl" role="group" aria-label="App Language">
             <button type="button" data-ui-lang="en" class="ui-lang-btn px-2 py-1.5 rounded-lg text-[11px] font-bold transition accent-btn-solid shadow-sm">EN</button>
             <button type="button" data-ui-lang="hi" class="ui-lang-btn px-2 py-1.5 rounded-lg text-[11px] font-bold transition opacity-80 hover:opacity-100">हिन्दी</button>
@@ -483,7 +470,6 @@
               <h2 id="continueTitle" class="text-base sm:text-lg font-bold mt-1 truncate">Para 1 • Alif Lam Meem</h2>
               <p id="continueSub" class="text-xs subtext-muted mt-0.5 truncate">Page 1 • Surah Al-Fatihah, Ayah 1</p>
 
-              <!-- 30-Para Progress Bar -->
               <div class="w-full sm:w-64 h-1.5 bg-black/30 rounded-full overflow-hidden mt-2.5 border border-white/10">
                 <div id="continueProgressFill" class="h-full accent-btn-solid rounded-full transition-all duration-500" style="width: 3.3%;"></div>
               </div>
@@ -530,9 +516,7 @@
       </div>
 
       <!-- 30 Paras Modern Card Grid -->
-      <div id="homeParasGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        <!-- Populated immediately on load -->
-      </div>
+      <div id="homeParasGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
     </div>
   </section>
 
@@ -541,11 +525,8 @@
   <!-- ===================================================================== -->
   <div id="readerView" class="hidden flex-col justify-between min-h-screen">
 
-    <!-- Compact Developer App Bar -->
     <header class="sticky top-0 z-30 app-glass-bar">
       <div class="max-w-5xl mx-auto px-3 sm:px-5 py-2.5 flex flex-wrap items-center justify-between gap-2">
-        
-        <!-- Left: Back Button & Quick Para Switcher -->
         <div class="flex items-center gap-2">
           <button id="backToIndexBtn" type="button" class="px-2.5 py-2 rounded-xl surface-pill hover:opacity-90 transition active:scale-95 flex items-center gap-1.5 text-xs font-semibold">
             <svg class="w-4 h-4 accent-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
@@ -553,16 +534,12 @@
           </button>
 
           <div class="relative">
-            <select id="readerParaSelect" aria-label="Jump to Para" class="appearance-none surface-pill font-bold text-xs sm:text-sm pl-3 pr-7 py-2 rounded-xl focus:outline-none cursor-pointer max-w-[155px] sm:max-w-[220px] truncate">
-              <!-- Populated dynamically with all 30 Paras -->
-            </select>
+            <select id="readerParaSelect" aria-label="Jump to Para" class="appearance-none surface-pill font-bold text-xs sm:text-sm pl-3 pr-7 py-2 rounded-xl focus:outline-none cursor-pointer max-w-[155px] sm:max-w-[220px] truncate"></select>
             <svg class="w-3.5 h-3.5 accent-text absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
           </div>
         </div>
 
-        <!-- Center/Right: Tarjuma Toggle Pill + App UI Language + Font Stepper + Themes Studio -->
         <div class="flex items-center gap-1.5 flex-wrap">
-          <!-- Tarjuma ON/OFF Pill (Separate from App UI Language) -->
           <div class="flex items-center gap-1 surface-deep p-0.5 rounded-xl">
             <button id="tarjumaToggleBtn" type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
@@ -576,25 +553,21 @@
             </select>
           </div>
 
-          <!-- App UI Language Segmented Control -->
           <div class="flex items-center surface-deep p-0.5 rounded-xl" role="group" aria-label="App Language">
             <button type="button" data-ui-lang="en" class="ui-lang-btn px-2 py-1.5 rounded-lg text-[11px] font-bold transition accent-btn-solid">EN</button>
             <button type="button" data-ui-lang="hi" class="ui-lang-btn px-2 py-1.5 rounded-lg text-[11px] font-bold transition">हिन्दी</button>
           </div>
 
-          <!-- Font Size Stepper -->
           <div class="hidden sm:flex items-center surface-deep rounded-xl overflow-hidden">
             <button id="fontDecBtn" type="button" class="px-2.5 py-1.5 hover:opacity-80 accent-text text-xs font-bold transition">A-</button>
             <span class="text-[10px] opacity-35">|</span>
             <button id="fontIncBtn" type="button" class="px-2.5 py-1.5 hover:opacity-80 accent-text text-xs font-bold transition">A+</button>
           </div>
 
-          <!-- Themes Studio Trigger -->
           <button id="readerOpenThemesBtn" type="button" class="p-2 rounded-xl surface-pill hover:opacity-90 accent-text transition active:scale-95" title="Designer Themes">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
           </button>
 
-          <!-- Bookmarks Drawer Trigger -->
           <button id="readerOpenBookmarksBtn" type="button" class="p-2 rounded-xl surface-pill hover:opacity-90 accent-text transition active:scale-95" title="Saved Ayahs">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           </button>
@@ -602,10 +575,7 @@
       </div>
     </header>
 
-    <!-- Main Mushaf Book Reading Canvas -->
     <main class="flex-1 max-w-4xl w-full mx-auto px-3 sm:px-6 pt-3.5 pb-44 flex flex-col items-center">
-      
-      <!-- Top Page Status & Quick Flip Bar -->
       <div class="w-full flex items-center justify-between mb-3 text-xs sm:text-sm gap-2">
         <button id="prevPageTopBtn" type="button" class="px-3 py-1.5 rounded-xl surface-pill hover:opacity-90 flex items-center gap-1.5 font-semibold transition active:scale-95 disabled:opacity-35">
           <svg class="w-3.5 h-3.5 accent-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
@@ -624,7 +594,6 @@
         </button>
       </div>
 
-      <!-- Realistic Bound Book Mushaf Container -->
       <article id="mushafPageCard" class="mushaf-book w-full rounded-2xl p-2.5 sm:p-5 relative select-text">
         <div class="mushaf-inner-frame rounded-xl p-4 sm:p-8 min-h-[56vh] flex flex-col justify-between">
           <span class="corner-ornament corner-tl"></span>
@@ -632,7 +601,6 @@
           <span class="corner-ornament corner-bl"></span>
           <span class="corner-ornament corner-br"></span>
 
-          <!-- Page Running Header -->
           <div class="flex items-center justify-between border-b pb-2.5 mb-4 text-xs sm:text-sm font-semibold" style="color: var(--text-muted); border-color: rgba(184, 138, 62, 0.28);">
             <span id="pageHeaderSurah" class="flex items-center gap-1.5">
               <span style="color: var(--border-gold);">۞</span>
@@ -642,14 +610,12 @@
             <span id="pageHeaderJuz">الجزء ١ • Para 1</span>
           </div>
 
-          <!-- Loading Spinner -->
           <div id="loadingState" class="flex-1 flex flex-col items-center justify-center py-16 text-center">
             <div class="w-11 h-11 border-[3px] border-amber-500/25 border-t-amber-500 rounded-full animate-spin mb-4"></div>
             <p id="loadingTitleText" class="font-bold text-base" style="color: var(--text-ink);">Loading Para...</p>
             <p id="loadingSubText" class="text-xs mt-1 max-w-xs" style="color: var(--text-muted);">Preparing authentic Uthmani text and studio recitation</p>
           </div>
 
-          <!-- Network Error State -->
           <div id="errorState" class="hidden flex-1 flex-col items-center justify-center py-14 text-center">
             <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-600 flex items-center justify-center mb-3">
               <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg>
@@ -661,10 +627,8 @@
             </button>
           </div>
 
-          <!-- Quran Verses Page Content -->
           <div id="versesContainer" class="hidden flex-1"></div>
 
-          <!-- Page Running Footer -->
           <div class="mt-6 pt-3 border-t flex items-center justify-between text-[11px] sm:text-xs" style="color: var(--text-muted); border-color: rgba(184, 138, 62, 0.28);">
             <span class="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-semibold">
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
@@ -683,11 +647,9 @@
               </div>
             </div>
           </div>
-
         </div>
       </article>
 
-      <!-- Bottom Seamless Page & Para-to-Para Navigation Bar -->
       <div class="w-full flex items-center justify-between mt-4 gap-3">
         <button id="prevPageBottomBtn" type="button" class="flex-1 sm:flex-none px-4 sm:px-5 py-3 rounded-2xl surface-pill hover:opacity-90 shadow-lg font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition active:scale-95 disabled:opacity-35">
           <svg class="w-4 h-4 accent-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
@@ -705,24 +667,18 @@
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
         </button>
       </div>
-
     </main>
 
     <!-- Docked Bottom Studio Audio Player -->
     <footer class="fixed bottom-0 inset-x-0 z-30 app-dock-player">
       <div class="max-w-5xl mx-auto px-3 sm:px-6 pt-2 pb-3">
-        
-        <!-- Scrubber & Timecodes -->
         <div class="flex items-center gap-2.5 mb-2">
           <span id="currentTimeLabel" class="text-[10px] sm:text-[11px] font-mono accent-text w-9 text-right">0:00</span>
           <input id="audioSeekBar" type="range" min="0" max="100" value="0" step="0.1" class="studio-scrubber flex-1" />
           <span id="durationLabel" class="text-[10px] sm:text-[11px] font-mono accent-text w-9">0:00</span>
         </div>
 
-        <!-- Transport & Qari Controls -->
         <div class="flex items-center justify-between gap-2">
-          
-          <!-- Track Info -->
           <div class="flex items-center gap-2.5 min-w-0 flex-1">
             <div id="audioPulseBadge" class="w-9 h-9 rounded-xl surface-pill flex items-center justify-center accent-text shrink-0">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
@@ -733,7 +689,6 @@
             </div>
           </div>
 
-          <!-- Center Playback Transport -->
           <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <button id="prevAyahBtn" type="button" class="p-2 rounded-full hover:bg-white/10 accent-text transition active:scale-90" title="Previous Ayah">
               <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
@@ -750,7 +705,6 @@
             </button>
           </div>
 
-          <!-- Qari Selector, Sleep Timer, Retry & Speed -->
           <div class="flex items-center justify-end gap-1.5 flex-1 min-w-0">
             <select id="reciterSelect" aria-label="Select Qari" class="surface-pill text-[11px] sm:text-xs font-semibold rounded-xl px-2 py-1.5 focus:outline-none max-w-[98px] sm:max-w-[150px] truncate cursor-pointer">
               <option value="ar.alafasy">Mishary Alafasy</option>
@@ -761,7 +715,6 @@
               <option value="ar.yasseraldossari">Yasser Al-Dosari</option>
             </select>
 
-            <!-- Sleep Timer Button -->
             <button id="sleepTimerBtn" type="button" class="px-2 py-1.5 rounded-xl surface-pill hover:opacity-90 accent-text text-[10px] sm:text-xs font-bold transition active:scale-95 shrink-0 flex items-center gap-1" title="Sleep Timer">
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
               <span id="sleepTimerLabel">Off</span>
@@ -775,7 +728,6 @@
               1.0x
             </button>
           </div>
-
         </div>
       </div>
     </footer>
@@ -1239,7 +1191,6 @@
         'ar.yasseraldossari': { everyAyahDir: 'Yasser_Ad-Dussary_128kbps', cdnId: 'ar.yasseraldossari', label: 'Yasser Al-Dosari' }
       };
 
-      /* --------------------------- SVG Icon Templates ------------------------ */
       const SVG_ICONS = {
         play: '<svg class="w-5 h-5 ml-0.5" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>',
         pause: '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>'
@@ -1496,7 +1447,6 @@
               <p class="text-[11px] mt-0.5 line-clamp-1" style="color: ${th.vars['--app-subtext']}; opacity: 0.85;">${desc}</p>
             </div>
 
-            <!-- Live 3-Swatch Visual Preview (App BG + Mushaf Paper + Gold Accent) -->
             <div class="flex items-center -space-x-1.5 shrink-0">
               <span class="w-6 h-6 rounded-full border border-white/25 shadow" style="background: ${th.vars['--app-bg']};"></span>
               <span class="w-6 h-6 rounded-full border border-black/20 shadow" style="background: ${th.vars['--paper-bg']};"></span>
@@ -2277,7 +2227,7 @@
           navigator.mediaSession.metadata = new MediaMetadata({
             title: `${ayah.surah.englishName} • Ayah ${ayah.numberInSurah}`,
             artist: `${qariLabel} — Para ${state.currentPara} (${paraMeta.roman})`,
-            album: 'القرآن الکریم • Al-Quran Al-Kareem'
+            album: 'Tilawat-e-Quran • Al-Quran Mushaf'
           });
           navigator.mediaSession.playbackState = state.isPlaying ? 'playing' : 'paused';
         } catch (e) {}
@@ -2472,7 +2422,6 @@
           });
         });
 
-        /* Theme Studio Modal Triggers */
         const openThemeModal = () => {
           renderThemesStudioGrid();
           el.themeStudioModal.classList.remove('hidden');
@@ -2489,7 +2438,6 @@
           if (e.target === el.themeStudioModal) closeThemeModal();
         });
 
-        /* Digital Tasbih Modal Triggers */
         el.homeOpenTasbihBtn.addEventListener('click', () => {
           renderTasbihUI();
           el.tasbihModal.classList.remove('hidden');
@@ -2545,7 +2493,6 @@
           showToast(t().tasbihResetToast);
         });
 
-        /* Bookmarks Modal Triggers */
         const openBookmarksModal = () => {
           renderBookmarksModalList();
           el.bookmarksModal.classList.remove('hidden');
@@ -2562,7 +2509,6 @@
           if (e.target === el.bookmarksModal) closeBookmarksModal();
         });
 
-        /* Daily Ayat Quick Open (Para 30, Surah Ash-Sharh 94:5, Global Ayah 6095) */
         el.openDailyAyahBtn.addEventListener('click', () => {
           openParaInReader(30, 0, false, 6095);
         });
