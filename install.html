@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <!-- Essential viewport & standalone PWA metadata for Home Screen installation -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Tilawat-e-Quran — Install to Home Screen</title>
+  <meta name="description" content="Install Tilawat-e-Quran to your Home Screen to unlock 30 Paras Mushaf reading, 8 designer themes, Tarjuma ON/OFF, Digital Tasbih, and continuous recitation." />
+  <meta name="theme-color" content="#F5EFE0" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Tilawat-e-Quran" />
+  <link id="faviconLink" rel="icon" type="image/png" href="icon.png" />
+  <link id="appleTouchIconLink" rel="apple-touch-icon" href="icon.png" />
+  <link id="dynamicManifestLink" rel="manifest" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Typography: Plus Jakarta Sans, Noto Sans Devanagari, Amiri Quran -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Editorial color & surface tokens matching Madinah Parchment theme */
+    :root {
+      --bg-parchment: #F5EFE0;
+      --bg-ivory: #FCF9F2;
+      --bg-ivory-soft: #F7F1E3;
+      --gold-antique: #9A6B26;
+      --gold-ochre: #C59342;
+      --gold-border: #E4D7BE;
+      --text-espresso: #2C2115;
+      --text-umber: #6E5B45;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-parchment);
+      background-image:
+        radial-gradient(ellipse 90% 45% at 50% -10%, rgba(197, 147, 66, 0.16), transparent),
+        radial-gradient(circle at 88% 85%, rgba(154, 107, 38, 0.08), transparent);
+      color: var(--text-espresso);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .font-arabic {
+      font-family: 'Amiri Quran', serif;
+    }
+
+    .glass-header {
+      background: rgba(245, 239, 224, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--gold-border);
+    }
+
+    .surface-card {
+      background: linear-gradient(180deg, var(--bg-ivory) 0%, var(--bg-ivory-soft) 100%);
+      border: 1px solid var(--gold-border);
+      box-shadow: 0 12px 30px -12px rgba(44, 33, 21, 0.10);
+    }
+
+    .gold-gradient-btn {
+      background: linear-gradient(135deg, var(--gold-ochre) 0%, var(--gold-antique) 100%);
+      color: #FCF9F2;
+      box-shadow: 0 10px 24px -8px rgba(154, 107, 38, 0.42);
+    }
+
+    .gold-gradient-btn:hover {
+      filter: brightness(1.04);
+    }
+
+    .gold-gradient-btn:active {
+      transform: scale(0.985);
+    }
+
+    .hairline-gold {
+      border-color: var(--gold-border);
+    }
+
+    .text-gold-light {
+      color: var(--gold-antique);
+    }
+
+    .text-gold {
+      color: var(--gold-ochre);
+    }
+
+    .text-mint-soft {
+      color: var(--text-umber);
+    }
+  </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+  <!-- Top Navigation Bar with EN / हिन्दी Switcher -->
+  <header class="sticky top-0 z-30 glass-header">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-10 h-10 rounded-2xl surface-card overflow-hidden flex items-center justify-center shrink-0">
+          <img
+            id="headerLogoImg"
+            src="icon.png"
+            alt="Tilawat-e-Quran Logo"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-sm sm:text-base text-[#2C2115] truncate">Tilawat-e-Quran</span>
+            <span id="headerBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#9A6B26]/10 text-[#9A6B26] border border-[#E4D7BE] shrink-0">
+              Install Required
+            </span>
+          </div>
+          <p id="headerSubtitle" class="text-[11px] text-mint-soft truncate">Home Screen App Edition</p>
+        </div>
+      </div>
+
+      <!-- Bilingual EN / हिन्दी Toggle -->
+      <div class="flex items-center p-0.5 rounded-xl bg-[#EFE6D2] border hairline-gold shrink-0" role="group" aria-label="Language switcher">
+        <button id="langEnBtn" type="button" data-lang="en" class="lang-toggle-btn px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition gold-gradient-btn">
+          EN
+        </button>
+        <button id="langHiBtn" type="button" data-lang="hi" class="lang-toggle-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition text-[#6E5B45] hover:text-[#2C2115]">
+          हिन्दी
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 pt-5 pb-14 space-y-6">
+
+    <!-- Status / Feedback Banner -->
+    <div id="statusNotice" class="hidden p-3.5 rounded-2xl bg-[#FCF9F2] border border-[#C59342] text-[#2C2115] shadow-md text-xs sm:text-sm flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#9A6B26] shrink-0"></span>
+        <span id="statusNoticeText" class="font-medium"></span>
+      </div>
+      <button id="dismissNoticeBtn" type="button" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-[#9A6B26]/10 text-[#9A6B26] hover:bg-[#9A6B26]/20 transition shrink-0">
+        OK
+      </button>
+    </div>
+
+    <!-- In-App Browser Warning Banner (Shown for WhatsApp / Instagram / Facebook webviews) -->
+    <section id="inAppBrowserAlert" class="hidden rounded-2xl p-4 sm:p-5 bg-[#9A6B26]/12 border-2 border-[#C59342] shadow-sm space-y-2">
+      <div class="flex items-start gap-3">
+        <div class="w-9 h-9 rounded-xl bg-[#9A6B26] text-[#FCF9F2] flex items-center justify-center shrink-0 mt-0.5">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </div>
+        <div class="min-w-0 flex-1">
+          <h2 id="inAppTitle" class="font-extrabold text-sm sm:text-base text-[#2C2115]">
+            Open in Chrome or Safari First
+          </h2>
+          <p id="inAppDesc" class="text-xs sm:text-sm text-[#6E5B45] mt-1 leading-relaxed">
+            You opened this link inside an in-app browser (such as WhatsApp or Instagram), which blocks Home Screen installation. Tap the top-right <strong class="text-[#2C2115]">⋮</strong> or <strong class="text-[#2C2115]">Share</strong> icon and choose <strong class="text-[#2C2115]">Open in Chrome / Safari</strong>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- UNLOCKED STATE: Shown ONLY when opened in Standalone Mode from Home Screen -->
+    <section id="unlockedStandaloneCard" class="hidden surface-card rounded-3xl p-6 sm:p-8 text-center space-y-4 border-2 border-[#C59342]">
+      <div class="w-20 h-20 mx-auto rounded-3xl overflow-hidden border-2 border-[#C59342] shadow-lg bg-[#F5EFE0]">
+        <img
+          id="unlockedLogoImg"
+          src="icon.png"
+          alt="Tilawat-e-Quran App Icon"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div>
+        <span id="unlockedBadge" class="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#9A6B26]/12 text-[#9A6B26] border hairline-gold">
+          Home Screen Mode Active
+        </span>
+        <h1 id="unlockedTitle" class="text-xl sm:text-3xl font-extrabold text-[#2C2115] mt-3">
+          Welcome to Tilawat-e-Quran
+        </h1>
+        <p id="unlockedSubtitle" class="text-xs sm:text-sm text-[#6E5B45] mt-1.5 max-w-md mx-auto">
+          App unlocked! Launching your full-screen 30 Paras Mushaf & recitation studio...
+        </p>
+      </div>
+      <div class="pt-2">
+        <a id="manualLaunchBtn" href="https://inzaa914.github.io/tilawat-e-quran/" class="inline-flex items-center justify-center gap-2 py-3.5 px-7 rounded-2xl gold-gradient-btn font-extrabold text-sm transition">
+          <span id="manualLaunchLabel">Launch Tilawat-e-Quran Now</span>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- STRICT INSTALL GATE: Shown when opened in regular browser (locks direct app launch) -->
+    <section id="installGateCard" class="surface-card rounded-3xl p-5 sm:p-8 relative overflow-hidden">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b hairline-gold">
+        <div class="flex items-center gap-4">
+          <div class="w-20 h-20 rounded-2xl bg-[#F5EFE0] border-2 border-[#C59342]/70 overflow-hidden shrink-0 shadow-md">
+            <img
+              id="heroLogoImg"
+              src="icon.png"
+              alt="Tilawat-e-Quran Madinah Parchment Emblem"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <p id="heroKicker" class="text-[11px] font-bold uppercase tracking-wider text-[#9A6B26]">
+              No Wrapper Bar • No Third-Party Ads
+            </p>
+            <h1 id="heroTitle" class="text-xl sm:text-3xl font-extrabold text-[#2C2115] tracking-tight mt-0.5">
+              Tilawat-e-Quran
+            </h1>
+            <p id="heroSubtitle" class="text-xs sm:text-sm text-[#6E5B45] mt-1">
+              Add this app to your Home Screen first. Once installed, tap the Home Screen icon to unlock and open the full Mushaf.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Locked App Preview Box -->
+      <div class="mt-5 p-4 rounded-2xl bg-[#EFE6D2]/80 border hairline-gold flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#FCF9F2] border hairline-gold text-[#9A6B26] flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+          </div>
+          <div>
+            <p id="lockStatusTitle" class="text-xs sm:text-sm font-extrabold text-[#2C2115]">
+              30 Paras Mushaf Locked in Browser
+            </p>
+            <p id="lockStatusSub" class="text-[11px] sm:text-xs text-[#6E5B45]">
+              Complete "Add to Home Screen" below to unlock full-screen access without browser bars.
+            </p>
+          </div>
+        </div>
+        <span id="lockPillText" class="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-[#FCF9F2] text-[#9A6B26] border hairline-gold shrink-0">
+          Step 1 of 2
+        </span>
+      </div>
+
+      <!-- Primary Install Trigger CTA -->
+      <div class="mt-4">
+        <button id="installAppBtn" type="button" class="w-full py-4 px-5 rounded-2xl gold-gradient-btn font-extrabold text-sm sm:text-base flex items-center justify-center gap-2.5 transition">
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v12" />
+            <path d="m7 10 5 5 5-5" />
+            <path d="M5 21h14" />
+          </svg>
+          <span id="installBtnLabel">Add to Home Screen / Install App</span>
+        </button>
+      </div>
+
+      <!-- Share & Copy Link Utility -->
+      <div class="mt-5 pt-4 border-t hairline-gold flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="min-w-0">
+          <span id="shareUtilityLabel" class="text-[11px] font-bold uppercase tracking-wider text-[#6E5B45] block">
+            Share Install Link
+          </span>
+          <p id="shareUrlText" class="text-xs text-[#9A6B26] truncate font-mono font-semibold mt-0.5">
+            https://inzaa914.github.io/tilawat-e-quran/install.html
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0 flex-wrap">
+          <button id="copyLinkBtn" type="button" class="px-3.5 py-2 rounded-xl bg-[#F5EFE0] hover:bg-[#EDE3CE] border hairline-gold text-xs font-bold text-[#2C2115] flex items-center gap-1.5 transition active:scale-95">
+            <svg class="w-3.5 h-3.5 text-[#9A6B26]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" />
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+            </svg>
+            <span id="copyLinkLabel">Copy Link</span>
+          </button>
+
+          <a id="whatsappShareBtn" href="https://api.whatsapp.com/send?text=Install%20Tilawat-e-Quran%20to%20your%20Home%20Screen%3A%20https%3A%2F%2Finzaa914.github.io%2Ftilawat-e-quran%2Finstall.html" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-xl bg-[#9A6B26]/12 hover:bg-[#9A6B26]/20 border border-[#C59342]/45 text-xs font-bold text-[#9A6B26] flex items-center gap-1.5 transition active:scale-95">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            </svg>
+            <span id="whatsappBtnLabel">WhatsApp</span>
+          </a>
+
+          <button id="nativeShareBtn" type="button" class="px-3.5 py-2 rounded-xl bg-[#F5EFE0] hover:bg-[#EDE3CE] border hairline-gold text-xs font-bold text-[#2C2115] flex items-center gap-1.5 transition active:scale-95">
+            <svg class="w-3.5 h-3.5 text-[#9A6B26]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+            <span id="shareBtnLabel">Share</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step-by-Step Home Screen Installation Guides (Android Chrome & iPhone Safari) -->
+    <section id="guidesSection" class="space-y-3">
+      <div>
+        <h2 id="guidesHeading" class="text-base sm:text-xl font-extrabold text-[#2C2115]">
+          3-Step Home Screen Unlock Guide
+        </h2>
+        <p id="guidesSubheading" class="text-xs sm:text-sm text-[#6E5B45] mt-0.5">
+          Add the icon to your Home Screen, then open it from your phone's Home Screen to unlock.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Android Chrome Guide -->
+        <article id="androidGuideCard" class="surface-card rounded-2xl p-5 space-y-3.5 transition">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-[#9A6B26]/12 border hairline-gold text-[#9A6B26] flex items-center justify-center font-extrabold text-xs">
+                A
+              </span>
+              <div>
+                <h3 id="androidTitle" class="font-extrabold text-sm sm:text-base text-[#2C2115]">Android (Chrome)</h3>
+                <p id="androidSub" class="text-[11px] text-[#6E5B45]">Install in 3 quick taps</p>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#F5EFE0] text-[#9A6B26] border hairline-gold">
+              ⋮ Menu
+            </span>
+          </div>
+
+          <ol class="space-y-2.5 text-xs sm:text-sm text-[#6E5B45]">
+            <li class="flex items-start gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-[#F5EFE0] border hairline-gold text-[#9A6B26] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">1</span>
+              <span id="androidStep1">Tap the <strong class="text-[#2C2115]">three dots (⋮)</strong> menu in the top-right corner of Chrome.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-[#F5EFE0] border hairline-gold text-[#9A6B26] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">2</span>
+              <span id="androidStep2">Select <strong class="text-[#2C2115]">Add to Home screen</strong> or <strong class="text-[#2C2115]">Install app</strong>, then tap <strong class="text-[#2C2115]">Add</strong>.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-[#F5EFE0] border hairline-gold text-[#9A6B26] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">3</span>
+              <span id="androidStep3">Go to your phone's Home Screen and tap the <strong class="text-[#2C2115]">Tilawat-e-Quran</strong> icon to unlock.</span>
+            </li>
+          </ol>
+        </article>
+
+        <!-- iPhone Safari Guide -->
+        <article id="iosGuideCard" class="surface-card rounded-2xl p-5 space-y-3.5 transition">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-xl bg-[#9A6B26]/12 border hairline-gold text-[#9A6B26] flex items-center justify-center font-extrabold text-xs">
+                iOS
+              </span>
+              <div>
+                <h3 id="iosTitle" class="font-extrabold text-sm sm:text-base text-[#2C2115]">iPhone (Safari)</h3>
+                <p id="iosSub" class="text-[11px] text-[#6E5B45]">Install in 3 quick taps</p>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#F5EFE0] text-[#9A6B26] border hairline-gold">
+              Share ↑
+            </span>
+          </div>
+
+          <ol class="space-y-2.5 text-xs sm:text-sm text-[#6E5B45]">
+            <li class="flex items-start gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-[#F5EFE0] border hairline-gold text-[#9A6B26] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">1</span>
+              <span id="iosStep1">Tap the <strong class="text-[#2C2115]">Share</strong> icon (square with an upward arrow) in Safari.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-[#F5EFE0] border hairline-gold text-[#9A6B26] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">2</span>
+              <span id="iosStep2">Scroll down, tap <strong class="text-[#2C2115]">Add to Home Screen</strong>, and confirm <strong class="text-[#2C2115]">Add</strong>.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-[#F5EFE0] border hairline-gold text-[#9A6B26] font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">3</span>
+              <span id="iosStep3">Open the <strong class="text-[#2C2115]">Tilawat-e-Quran</strong> icon from your Home Screen to unlock.</span>
+            </li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <!-- App Highlights Showcase -->
+    <section id="featuresSection" class="space-y-3">
+      <div>
+        <h2 id="featuresHeading" class="text-base sm:text-xl font-extrabold text-[#2C2115]">
+          What Unlocks After Installing
+        </h2>
+        <p id="featuresSubheading" class="text-xs sm:text-sm text-[#6E5B45] mt-0.5">
+          Crafted for calm reading, continuous listening, and daily dhikr.
+        </p>
+      </div>
+
+      <div id="featuresGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+    </section>
+  </main>
+
+  <!-- Clean Footer -->
+  <footer class="border-t hairline-gold bg-[#EFE6D2]/70 py-5 px-4 sm:px-6 text-center text-xs text-[#6E5B45]">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <span class="font-bold text-[#9A6B26]">Tilawat-e-Quran</span>
+      <span id="footerNote">Ad-free Home Screen edition • Madinah Parchment UI</span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const BASE_URL = 'https://inzaa914.github.io/tilawat-e-quran/';
+      const MAIN_APP_URL = BASE_URL;
+      const INSTALL_PAGE_URL = BASE_URL + 'install.html';
+      const LOGO_URL = BASE_URL + 'icon.png';
+
+      /* High-detail inline Madinah Parchment Islamic arch + open Quran SVG fallback */
+      const FALLBACK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <defs>
+          <linearGradient id="bgParchment" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FCF9F2"/>
+            <stop offset="100%" stop-color="#EDE2C8"/>
+          </linearGradient>
+          <linearGradient id="goldFrame" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#D4A654"/>
+            <stop offset="50%" stop-color="#B07D32"/>
+            <stop offset="100%" stop-color="#8C5E1E"/>
+          </linearGradient>
+          <radialGradient id="bookGlow" cx="50%" cy="48%" r="36%">
+            <stop offset="0%" stop-color="#E5BC6B" stop-opacity="0.65"/>
+            <stop offset="100%" stop-color="#2C2115" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="512" height="512" rx="112" fill="url(#bgParchment)"/>
+        <rect x="18" y="18" width="476" height="476" rx="98" fill="none" stroke="#DFCFAF" stroke-width="4"/>
+        <!-- Ornate Islamic Mihrab Arch -->
+        <path d="M256 64 C236 104 176 136 136 168 C114 186 106 208 106 236 L106 432 L406 432 L406 236 C406 208 398 186 376 168 C336 136 276 104 256 64 Z" fill="#2C2115" stroke="url(#goldFrame)" stroke-width="14" stroke-linejoin="round"/>
+        <path d="M256 90 C238 124 186 152 152 180 C134 195 128 212 128 236 L128 410 L384 410 L384 236 C384 212 378 195 360 180 C326 152 274 124 256 90 Z" fill="none" stroke="#C59342" stroke-width="4" stroke-dasharray="10 6"/>
+        <circle cx="256" cy="248" r="115" fill="url(#bookGlow)"/>
+        <!-- Rehal Stand -->
+        <path d="M180 374 L318 294 L334 308 L196 388 Z" fill="url(#goldFrame)"/>
+        <path d="M332 374 L194 294 L178 308 L316 388 Z" fill="url(#goldFrame)"/>
+        <!-- Open Quran Pages -->
+        <path d="M256 254 C228 238 194 236 166 246 L152 296 C184 286 222 290 256 308 C290 290 328 286 360 296 L346 246 C318 236 284 238 256 254 Z" fill="#FCF9F2" stroke="url(#goldFrame)" stroke-width="6" stroke-linejoin="round"/>
+        <line x1="256" y1="254" x2="256" y2="308" stroke="#9A6B26" stroke-width="4"/>
+        <path d="M182 260 Q216 254 242 266 M178 274 Q214 268 242 280 M330 260 Q296 254 270 266 M334 274 Q298 268 270 280" stroke="#9A6B26" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      </svg>`;
+      const FALLBACK_DATA_URI = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(FALLBACK_SVG);
+
+      /* -------------------- Dynamic Standalone PWA Manifest ------------------ */
+      function attachWebManifest(resolvedIconSrc) {
+        try {
+          const manifest = {
+            name: 'Tilawat-e-Quran',
+            short_name: 'Tilawat-e-Quran',
+            description: '30 Paras Mushaf & Continuous Recitation',
+            start_url: INSTALL_PAGE_URL,
+            scope: BASE_URL,
+            display: 'standalone',
+            background_color: '#F5EFE0',
+            theme_color: '#F5EFE0',
+            icons: [
+              { src: resolvedIconSrc, sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+              { src: resolvedIconSrc, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+            ]
+          };
+          const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+          const manifestLink = document.getElementById('dynamicManifestLink');
+          if (manifestLink) {
+            manifestLink.href = URL.createObjectURL(blob);
+          }
+        } catch (e) {}
+      }
+
+      /* Configure logo images so icon.png is used everywhere with seamless fallback */
+      function setupBrandLogos() {
+        const logoImgs = [
+          document.getElementById('headerLogoImg'),
+          document.getElementById('heroLogoImg'),
+          document.getElementById('unlockedLogoImg')
+        ];
+
+        logoImgs.forEach((img) => {
+          if (!img) return;
+          img.onerror = function () {
+            if (this.dataset.fallbackApplied) return;
+            this.dataset.fallbackApplied = 'true';
+            this.src = FALLBACK_DATA_URI;
+          };
+        });
+
+        attachWebManifest(LOGO_URL);
+      }
+
+      /* -------------------- Bilingual Copy (EN / हिन्दी) -------------------- */
+      const COPY = {
+        en: {
+          headerBadge: 'Install Required',
+          headerBadgeUnlocked: 'Unlocked',
+          headerSubtitle: 'Home Screen App Edition',
+          inAppTitle: 'Open in Chrome or Safari First',
+          inAppDesc: 'You opened this link inside an in-app browser (WhatsApp / Instagram), which blocks Home Screen installation. Tap the top-right <strong>⋮</strong> or <strong>Share</strong> icon and choose <strong>Open in Chrome / Safari</strong>.',
+          unlockedBadge: 'Home Screen Mode Active',
+          unlockedTitle: 'Welcome to Tilawat-e-Quran',
+          unlockedSubtitle: 'App unlocked! Launching your full-screen 30 Paras Mushaf & recitation studio...',
+          manualLaunchLabel: 'Launch Tilawat-e-Quran Now',
+          heroKicker: 'No Wrapper Bar • No Third-Party Ads',
+          heroTitle: 'Tilawat-e-Quran',
+          heroSubtitle: 'Add this app to your Home Screen first. Once installed, tap the Home Screen icon to unlock and open the full Mushaf.',
+          lockStatusTitle: '30 Paras Mushaf Locked in Browser',
+          lockStatusSub: 'Complete "Add to Home Screen" below to unlock full-screen access without browser bars.',
+          lockPillText: 'Step 1 of 2',
+          installBtn: 'Add to Home Screen / Install App',
+          shareUtilityLabel: 'Share Install Link',
+          copyLink: 'Copy Link',
+          copiedLink: 'Copied!',
+          whatsappBtn: 'WhatsApp',
+          shareBtn: 'Share',
+          guidesHeading: '3-Step Home Screen Unlock Guide',
+          guidesSubheading: "Add the icon to your Home Screen, then open it from your phone's Home Screen to unlock.",
+          androidTitle: 'Android (Chrome)',
+          androidSub: 'Install in 3 quick taps',
+          androidStep1: 'Tap the <strong>three dots (⋮)</strong> menu in the top-right corner of Chrome.',
+          androidStep2: 'Select <strong>Add to Home screen</strong> or <strong>Install app</strong>, then tap <strong>Add</strong>.',
+          androidStep3: "Go to your phone's Home Screen and tap the <strong>Tilawat-e-Quran</strong> icon to unlock.",
+          iosTitle: 'iPhone (Safari)',
+          iosSub: 'Install in 3 quick taps',
+          iosStep1: 'Tap the <strong>Share</strong> icon (square with an upward arrow) in Safari.',
+          iosStep2: 'Scroll down, tap <strong>Add to Home Screen</strong>, and confirm <strong>Add</strong>.',
+          iosStep3: 'Open the <strong>Tilawat-e-Quran</strong> icon from your Home Screen to unlock.',
+          featuresHeading: 'What Unlocks After Installing',
+          featuresSubheading: 'Crafted for calm reading, continuous listening, and daily dhikr.',
+          footerNote: 'Ad-free Home Screen edition • Madinah Parchment UI',
+          promptTriggeredMsg: 'Install prompt opened — tap Install, then open Tilawat-e-Quran from your Home Screen.',
+          promptAcceptedMsg: 'Installed! Now go to your Home Screen and tap the Tilawat-e-Quran icon to unlock.',
+          manualGuideMsg: 'Follow the 3 steps below: open browser menu (⋮ in Chrome or Share in Safari) -> Add to Home Screen, then launch from Home Screen.',
+          linkCopiedMsg: 'Install link copied! Paste it in WhatsApp to share with others.',
+          shareSuccessMsg: 'Share sheet opened.',
+          shareFallbackMsg: 'Install link copied — paste it directly into WhatsApp.',
+          features: [
+            {
+              title: 'Complete 30 Paras Index',
+              desc: 'Quickly search and jump to any of the 30 Paras with Arabic titles and Surah ranges.'
+            },
+            {
+              title: 'Mushaf Reader & Tarjuma ON/OFF',
+              desc: 'Clean Uthmani book pages with instant toggle for translation whenever you want it.'
+            },
+            {
+              title: '8 Designer Themes',
+              desc: 'Switch between Madinah Parchment, Royal Emerald, Midnight OLED, Sepia, and gold palettes.'
+            },
+            {
+              title: 'Auto-Save Resume',
+              desc: 'Automatically remembers your last read Para, page, and progress so you can continue anytime.'
+            },
+            {
+              title: 'Digital Tasbih Counter',
+              desc: 'Built-in dhikr counter with preset phrases, target counts (33 / 99 / 100 / ∞), and reset.'
+            },
+            {
+              title: 'Saved Ayah Bookmarks',
+              desc: 'Save favorite Ayahs and jump back to them anytime from your bookmarks list.'
+            },
+            {
+              title: 'Sleep Timer',
+              desc: 'Set a timer so recitation pauses gently when you rest or sleep.'
+            },
+            {
+              title: 'Continuous Recitation & Marker',
+              desc: 'Non-stop playback across Ayahs with a clear "Listened up to here" bookmark line.'
+            }
+          ]
+        },
+        hi: {
+          headerBadge: 'इंस्टॉल ज़रूरी है',
+          headerBadgeUnlocked: 'अनलॉक हो गया',
+          headerSubtitle: 'होम स्क्रीन ऐप एडिशन',
+          inAppTitle: 'पहले Chrome या Safari में खोलें',
+          inAppDesc: 'आपने यह लिंक WhatsApp या Instagram के अंदर खोला है, जहाँ होम स्क्रीन इंस्टॉल काम नहीं करता। ऊपर दाईं ओर <strong>⋮</strong> या <strong>Share</strong> दबाकर <strong>Open in Chrome / Safari</strong> चुनें।',
+          unlockedBadge: 'होम स्क्रीन मोड सक्रिय',
+          unlockedTitle: 'तिलावत-ए-क़ुरआन में ख़ुशामदीद',
+          unlockedSubtitle: 'ऐप अनलॉक हो गया है! अब 30 पारों का मुसहफ़ खुल रहा है...',
+          manualLaunchLabel: 'अभी तिलावत-ए-क़ुरआन खोलें',
+          heroKicker: 'बिना एक्स्ट्रा पट्टी • बिना किसी विज्ञापन के',
+          heroTitle: 'तिलावत-ए-क़ुरआन (Tilawat-e-Quran)',
+          heroSubtitle: 'पहले इस ऐप को अपनी होम स्क्रीन में जोड़ें। इंस्टॉल होने के बाद होम स्क्रीन आइकन से खोलने पर पूरा मुसहफ़ अनलॉक हो जाएगा।',
+          lockStatusTitle: 'ब्राउज़र में 30 पारों का मुसहफ़ लॉक है',
+          lockStatusSub: 'बिना ब्राउज़र पट्टी के फुल-स्क्रीन ऐप चलाने के लिए नीचे दिए गए तरीके से "Add to Home Screen" करें।',
+          lockPillText: 'कदम 1 / 2',
+          installBtn: 'होम स्क्रीन में जोड़ें / इंस्टॉल करें',
+          shareUtilityLabel: 'इंस्टॉल लिंक शेयर करें',
+          copyLink: 'लिंक कॉपी करें',
+          copiedLink: 'कॉपी हो गया!',
+          whatsappBtn: 'WhatsApp',
+          shareBtn: 'शेयर करें',
+          guidesHeading: 'होम स्क्रीन से अनलॉक करने के 3 आसान कदम',
+          guidesSubheading: 'पहले आइकन को होम स्क्रीन में जोड़ें, फिर फ़ोन की होम स्क्रीन से ऐप खोलें।',
+          androidTitle: 'एंड्रॉयड (Chrome)',
+          androidSub: '3 आसान टैप में इंस्टॉल करें',
+          androidStep1: 'Chrome के ऊपर दाईं ओर <strong>तीन बिंदुओं (⋮)</strong> के मेन्यू पर टैप करें।',
+          androidStep2: '<strong>Add to Home screen</strong> या <strong>Install app</strong> चुनें और फिर <strong>Add</strong> दबाएं।',
+          androidStep3: 'अब फ़ोन की होम स्क्रीन पर जाकर <strong>Tilawat-e-Quran</strong> आइकन पर टैप करें।',
+          iosTitle: 'आईफ़ोन (Safari)',
+          iosSub: '3 आसान टैप में इंस्टॉल करें',
+          iosStep1: 'Safari में नीचे या ऊपर <strong>Share</strong> आइकन (ऊपर जाते तीर वाला बॉक्स) पर टैप करें।',
+          iosStep2: 'नीचे स्क्रॉल करके <strong>Add to Home Screen</strong> चुनें और <strong>Add</strong> दबाएं।',
+          iosStep3: 'अब होम स्क्रीन से <strong>Tilawat-e-Quran</strong> आइकन खोलकर ऐप अनलॉक करें।',
+          featuresHeading: 'इंस्टॉल करने के बाद क्या-क्या खुलेगा',
+          featuresSubheading: 'सुकून से पढ़ने, लगातार सुनने और रोज़ाना के ज़िक्र के लिए तैयार।',
+          footerNote: 'बिना विज्ञापनों का होम स्क्रीन एडिशन • मदीना पार्चमेंट थीम',
+          promptTriggeredMsg: 'इंस्टॉल प्रॉम्प्ट खुल गया है — Install दबाएं, फिर अपनी होम स्क्रीन से ऐप खोलें।',
+          promptAcceptedMsg: 'इंस्टॉल हो गया! अब अपने फ़ोन की होम स्क्रीन पर जाकर Tilawat-e-Quran आइकन खोलें।',
+          manualGuideMsg: 'नीचे दिए गए 3 कदम अपनाएं: ब्राउज़र मेन्यू (Chrome में ⋮ या Safari में Share) से Add to Home Screen करें, फिर होम स्क्रीन से खोलें।',
+          linkCopiedMsg: 'इंस्टॉल लिंक कॉपी हो गया है! अब WhatsApp पर पेस्ट करके शेयर करें।',
+          shareSuccessMsg: 'शेयर विकल्प खुल गया है।',
+          shareFallbackMsg: 'लिंक कॉपी कर लिया गया है — WhatsApp पर पेस्ट करके शेयर करें।',
+          features: [
+            {
+              title: 'पूरे 30 पारों की फ़ेहरिस्त',
+              desc: 'नंबर या नाम से खोजें और किसी भी पारे को आसानी से खोलें।'
+            },
+            {
+              title: 'मुसहफ़ रीडर और तर्जुमा ON/OFF',
+              desc: 'साफ़ किताब जैसा लेआउट और ज़रूरत के हिसाब से तर्जुमा चालू या बंद करने की सुविधा।'
+            },
+            {
+              title: '8 डिज़ाइनर थीम्स',
+              desc: 'मदीना पार्चमेंट, रॉयल एमराल्ड, मिडनाइट OLED, सेपिया और गोल्ड थीम्स में पढ़ें।'
+            },
+            {
+              title: 'ऑटो-सेव रिज़्यूम',
+              desc: 'आपने जहाँ छोड़ा था वहीं से दोबारा शुरू करने के लिए प्रोग्रेस अपने आप सेव रहती है।'
+            },
+            {
+              title: 'डिजिटल तस्बीह काउंटर',
+              desc: 'तैयार ज़िक्र, लक्ष्य गिनती (33 / 99 / 100 / ∞) और रीसेट विकल्प के साथ तस्बीह।'
+            },
+            {
+              title: 'सेव की गई पसंदीदा आयतें',
+              desc: 'अपनी मनपसंद आयतों को बुकमार्क में सेव करें और कभी भी दोबारा देखें।'
+            },
+            {
+              title: 'स्लीप टाइमर',
+              desc: 'आराम या सोने से पहले टाइमर सेट करें ताकि तिलावत तय समय पर रुक जाए।'
+            },
+            {
+              title: 'लगातार तिलावत और मार्कर लाइन',
+              desc: 'आयतों की लगातार तिलावत और "यहाँ तक सुना है" का स्पष्ट निशान।'
+            }
+          ]
+        }
+      };
+
+      let currentLang = 'en';
+      let deferredInstallPrompt = null;
+
+      /* ------------------------ DOM Element References ----------------------- */
+      const els = {
+        headerBadge: document.getElementById('headerBadge'),
+        headerSubtitle: document.getElementById('headerSubtitle'),
+        langEnBtn: document.getElementById('langEnBtn'),
+        langHiBtn: document.getElementById('langHiBtn'),
+        statusNotice: document.getElementById('statusNotice'),
+        statusNoticeText: document.getElementById('statusNoticeText'),
+        dismissNoticeBtn: document.getElementById('dismissNoticeBtn'),
+        inAppBrowserAlert: document.getElementById('inAppBrowserAlert'),
+        inAppTitle: document.getElementById('inAppTitle'),
+        inAppDesc: document.getElementById('inAppDesc'),
+        unlockedStandaloneCard: document.getElementById('unlockedStandaloneCard'),
+        unlockedBadge: document.getElementById('unlockedBadge'),
+        unlockedTitle: document.getElementById('unlockedTitle'),
+        unlockedSubtitle: document.getElementById('unlockedSubtitle'),
+        manualLaunchBtn: document.getElementById('manualLaunchBtn'),
+        manualLaunchLabel: document.getElementById('manualLaunchLabel'),
+        installGateCard: document.getElementById('installGateCard'),
+        heroKicker: document.getElementById('heroKicker'),
+        heroTitle: document.getElementById('heroTitle'),
+        heroSubtitle: document.getElementById('heroSubtitle'),
+        lockStatusTitle: document.getElementById('lockStatusTitle'),
+        lockStatusSub: document.getElementById('lockStatusSub'),
+        lockPillText: document.getElementById('lockPillText'),
+        installAppBtn: document.getElementById('installAppBtn'),
+        installBtnLabel: document.getElementById('installBtnLabel'),
+        shareUtilityLabel: document.getElementById('shareUtilityLabel'),
+        copyLinkBtn: document.getElementById('copyLinkBtn'),
+        copyLinkLabel: document.getElementById('copyLinkLabel'),
+        whatsappBtnLabel: document.getElementById('whatsappBtnLabel'),
+        nativeShareBtn: document.getElementById('nativeShareBtn'),
+        shareBtnLabel: document.getElementById('shareBtnLabel'),
+        guidesHeading: document.getElementById('guidesHeading'),
+        guidesSubheading: document.getElementById('guidesSubheading'),
+        androidGuideCard: document.getElementById('androidGuideCard'),
+        androidTitle: document.getElementById('androidTitle'),
+        androidSub: document.getElementById('androidSub'),
+        androidStep1: document.getElementById('androidStep1'),
+        androidStep2: document.getElementById('androidStep2'),
+        androidStep3: document.getElementById('androidStep3'),
+        iosGuideCard: document.getElementById('iosGuideCard'),
+        iosTitle: document.getElementById('iosTitle'),
+        iosSub: document.getElementById('iosSub'),
+        iosStep1: document.getElementById('iosStep1'),
+        iosStep2: document.getElementById('iosStep2'),
+        iosStep3: document.getElementById('iosStep3'),
+        featuresHeading: document.getElementById('featuresHeading'),
+        featuresSubheading: document.getElementById('featuresSubheading'),
+        featuresGrid: document.getElementById('featuresGrid'),
+        footerNote: document.getElementById('footerNote')
+      };
+
+      /* ----------------------- Standalone & Browser Detection ---------------- */
+
+      function isRunningStandalone() {
+        const mediaStandalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+        const iosStandalone = window.navigator.standalone === true;
+        return Boolean(mediaStandalone || iosStandalone);
+      }
+
+      function detectInAppBrowser() {
+        const ua = navigator.userAgent || navigator.vendor || '';
+        return /FBAN|FBAV|Instagram|WhatsApp|Line\/|Snapchat|Twitter|MicroMessenger/i.test(ua);
+      }
+
+      function evaluateGateState() {
+        const standalone = isRunningStandalone();
+        const inApp = detectInAppBrowser();
+        const copy = COPY[currentLang];
+
+        if (standalone) {
+          els.installGateCard.classList.add('hidden');
+          els.inAppBrowserAlert.classList.add('hidden');
+          els.unlockedStandaloneCard.classList.remove('hidden');
+          els.headerBadge.textContent = copy.headerBadgeUnlocked;
+          setTimeout(() => {
+            window.location.replace(MAIN_APP_URL);
+          }, 650);
+          return true;
+        }
+
+        els.unlockedStandaloneCard.classList.add('hidden');
+        els.installGateCard.classList.remove('hidden');
+        els.headerBadge.textContent = copy.headerBadge;
+
+        if (inApp) {
+          els.inAppBrowserAlert.classList.remove('hidden');
+        } else {
+          els.inAppBrowserAlert.classList.add('hidden');
+        }
+        return false;
+      }
+
+      /* --------------------------- Helper Functions -------------------------- */
+
+      function showNotice(message) {
+        els.statusNoticeText.textContent = message;
+        els.statusNotice.classList.remove('hidden');
+      }
+
+      function hideNotice() {
+        els.statusNotice.classList.add('hidden');
+      }
+
+      function renderFeatures(items) {
+        els.featuresGrid.innerHTML = '';
+        items.forEach((feat, idx) => {
+          const card = document.createElement('div');
+          card.className = 'surface-card rounded-2xl p-4 flex items-start gap-3.5';
+          card.innerHTML = `
+            <div class="w-8 h-8 rounded-xl bg-[#F5EFE0] border hairline-gold text-[#9A6B26] font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">
+              ${idx + 1}
+            </div>
+            <div class="min-w-0">
+              <h3 class="font-bold text-sm text-[#2C2115]">${feat.title}</h3>
+              <p class="text-xs text-[#6E5B45] mt-0.5 leading-relaxed">${feat.desc}</p>
+            </div>
+          `;
+          els.featuresGrid.appendChild(card);
+        });
+      }
+
+      function applyLanguage(lang) {
+        currentLang = lang === 'hi' ? 'hi' : 'en';
+        document.documentElement.lang = currentLang;
+
+        const copy = COPY[currentLang];
+        const isHi = currentLang === 'hi';
+
+        els.langEnBtn.className = isHi
+          ? 'lang-toggle-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition text-[#6E5B45] hover:text-[#2C2115]'
+          : 'lang-toggle-btn px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition gold-gradient-btn';
+
+        els.langHiBtn.className = isHi
+          ? 'lang-toggle-btn px-2.5 py-1.5 rounded-lg text-xs font-extrabold transition gold-gradient-btn'
+          : 'lang-toggle-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition text-[#6E5B45] hover:text-[#2C2115]';
+
+        els.headerBadge.textContent = isRunningStandalone() ? copy.headerBadgeUnlocked : copy.headerBadge;
+        els.headerSubtitle.textContent = copy.headerSubtitle;
+        els.inAppTitle.textContent = copy.inAppTitle;
+        els.inAppDesc.innerHTML = copy.inAppDesc;
+        els.unlockedBadge.textContent = copy.unlockedBadge;
+        els.unlockedTitle.textContent = copy.unlockedTitle;
+        els.unlockedSubtitle.textContent = copy.unlockedSubtitle;
+        els.manualLaunchLabel.textContent = copy.manualLaunchLabel;
+        els.heroKicker.textContent = copy.heroKicker;
+        els.heroTitle.textContent = copy.heroTitle;
+        els.heroSubtitle.textContent = copy.heroSubtitle;
+        els.lockStatusTitle.textContent = copy.lockStatusTitle;
+        els.lockStatusSub.textContent = copy.lockStatusSub;
+        els.lockPillText.textContent = copy.lockPillText;
+        els.installBtnLabel.textContent = copy.installBtn;
+        els.shareUtilityLabel.textContent = copy.shareUtilityLabel;
+        els.copyLinkLabel.textContent = copy.copyLink;
+        els.whatsappBtnLabel.textContent = copy.whatsappBtn;
+        els.shareBtnLabel.textContent = copy.shareBtn;
+        els.guidesHeading.textContent = copy.guidesHeading;
+        els.guidesSubheading.textContent = copy.guidesSubheading;
+        els.androidTitle.textContent = copy.androidTitle;
+        els.androidSub.textContent = copy.androidSub;
+        els.androidStep1.innerHTML = copy.androidStep1;
+        els.androidStep2.innerHTML = copy.androidStep2;
+        els.androidStep3.innerHTML = copy.androidStep3;
+        els.iosTitle.textContent = copy.iosTitle;
+        els.iosSub.textContent = copy.iosSub;
+        els.iosStep1.innerHTML = copy.iosStep1;
+        els.iosStep2.innerHTML = copy.iosStep2;
+        els.iosStep3.innerHTML = copy.iosStep3;
+        els.featuresHeading.textContent = copy.featuresHeading;
+        els.featuresSubheading.textContent = copy.featuresSubheading;
+        els.footerNote.textContent = copy.footerNote;
+
+        renderFeatures(copy.features);
+      }
+
+      function copyUrlFallback(url) {
+        const tempInput = document.createElement('textarea');
+        tempInput.value = url;
+        tempInput.setAttribute('readonly', '');
+        tempInput.style.position = 'fixed';
+        tempInput.style.opacity = '0';
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        let success = false;
+        try {
+          success = document.execCommand('copy');
+        } catch (err) {
+          success = false;
+        }
+        document.body.removeChild(tempInput);
+        return success;
+      }
+
+      function highlightPlatformGuide() {
+        const ua = navigator.userAgent || '';
+        const isIOS = /iPhone|iPad|iPod/i.test(ua);
+        const isAndroid = /Android/i.test(ua);
+
+        if (isIOS) {
+          els.iosGuideCard.classList.add('ring-2', 'ring-[#C59342]');
+        } else if (isAndroid) {
+          els.androidGuideCard.classList.add('ring-2', 'ring-[#9A6B26]');
+        }
+      }
+
+      /* --------------------------- Event Bindings ---------------------------- */
+
+      function bindEvents() {
+        els.langEnBtn.addEventListener('click', () => applyLanguage('en'));
+        els.langHiBtn.addEventListener('click', () => applyLanguage('hi'));
+        els.dismissNoticeBtn.addEventListener('click', hideNotice);
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          deferredInstallPrompt = e;
+        });
+
+        window.addEventListener('appinstalled', () => {
+          deferredInstallPrompt = null;
+          showNotice(COPY[currentLang].promptAcceptedMsg);
+        });
+
+        els.installAppBtn.addEventListener('click', async () => {
+          const copy = COPY[currentLang];
+          if (deferredInstallPrompt) {
+            try {
+              deferredInstallPrompt.prompt();
+              showNotice(copy.promptTriggeredMsg);
+              const choiceResult = await deferredInstallPrompt.userChoice;
+              if (choiceResult && choiceResult.outcome === 'accepted') {
+                showNotice(copy.promptAcceptedMsg);
+              }
+              deferredInstallPrompt = null;
+            } catch (err) {
+              showNotice(copy.manualGuideMsg);
+            }
+          } else {
+            showNotice(copy.manualGuideMsg);
+            const targetCard = /iPhone|iPad|iPod/i.test(navigator.userAgent || '')
+              ? els.iosGuideCard
+              : els.androidGuideCard;
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+
+        els.copyLinkBtn.addEventListener('click', () => {
+          const copy = COPY[currentLang];
+          copyUrlFallback(INSTALL_PAGE_URL);
+          els.copyLinkLabel.textContent = copy.copiedLink;
+          showNotice(copy.linkCopiedMsg);
+          setTimeout(() => {
+            els.copyLinkLabel.textContent = COPY[currentLang].copyLink;
+          }, 2200);
+        });
+
+        els.nativeShareBtn.addEventListener('click', async () => {
+          const copy = COPY[currentLang];
+          if (navigator.share) {
+            try {
+              await navigator.share({
+                title: 'Tilawat-e-Quran',
+                text: 'Add Tilawat-e-Quran to your Home Screen for 30 Paras Mushaf reading and continuous recitation:',
+                url: INSTALL_PAGE_URL
+              });
+              showNotice(copy.shareSuccessMsg);
+            } catch (err) {
+              if (err && err.name !== 'AbortError') {
+                copyUrlFallback(INSTALL_PAGE_URL);
+                showNotice(copy.shareFallbackMsg);
+              }
+            }
+          } else {
+            copyUrlFallback(INSTALL_PAGE_URL);
+            showNotice(copy.shareFallbackMsg);
+          }
+        });
+      }
+
+      /* --------------------------- Initialization ---------------------------- */
+
+      function init() {
+        setupBrandLogos();
+        bindEvents();
+        highlightPlatformGuide();
+        applyLanguage('en');
+        evaluateGateState();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
